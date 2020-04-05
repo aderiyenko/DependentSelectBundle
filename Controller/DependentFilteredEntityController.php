@@ -5,6 +5,7 @@ namespace Evercode\DependentSelectBundle\Controller;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -148,6 +149,7 @@ class DependentFilteredEntityController extends Controller
 
         $getter = $this->getGetterName($entity_inf['property']);
 
+        $items = [];
         foreach ($results as $key => $result) {
             if ($entity_inf['property']) {
                 $res = $result->$getter();
@@ -164,17 +166,20 @@ class DependentFilteredEntityController extends Controller
                 }
             }
 
-            $optionString = '<option value="%d">%s</option>';
-
-            //auto select first result (if it's enabled in the config.yml)
-            if (($entity_inf['auto_select_first_result'] && $key === 0) || $result->getId() === $selectedResultId) {
-                $optionString = '<option value="%d" selected>%s</option>';
-            }
-
-            $html = $html.sprintf($optionString, $result->getId(), $res);
+            $items[] = [
+                'value' => $res,
+                'id' => $result->getId(),
+                'selected' => ($entity_inf['auto_select_first_result'] && $key === 0) || $result->getId() === $selectedResultId
+            ];
         }
 
-        return new Response($html);
+        return new JsonResponse(
+            [
+                'count' => count($items),
+                'data' => $items,
+                'max_number_of_items' => $entity_inf['max_number_of_items']
+            ]
+        );
     }
 
     /**

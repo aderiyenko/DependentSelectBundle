@@ -24,6 +24,7 @@ You should configure relationship between master and dependent fields for each p
             no_result_msg: 'No regions found for that country'
             order_property: title
             order_direction: ASC
+            max_number_of_items: 200
 
 - **class** - Doctrine dependent entity.
 - **role** - User role to use form type. Default: ``IS_AUTHENTICATED_ANONYMOUSLY``. It needs for security reason.
@@ -34,7 +35,7 @@ You should configure relationship between master and dependent fields for each p
 - **order_direction** - You can use:
    - ``ASC`` - (**default**)
    - ``DESC`` - LIKE '%value'
-
+- **max_number_of_items** - The maximum number of items in the dependent entity. If there are more than this value returned, the drop down will be convereted to an autocomplete textbox. Optional. Default value 100
 
 Usage
 =====
