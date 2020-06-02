@@ -36,7 +36,7 @@
                             jQuery("select#{{ form.vars.id }}").html('<em>{{ no_result_msg|trans() }}</em>');
                         } else if (count && count <= msg.max_number_of_items) {
                             jQuery('input#{{ form.vars.id }}_text').remove();
-                            jQuery('input#{{ form.vars.id }}').replaceWith('<select id="{{ form.vars.id }}" name="form[{{ form.vars.id }}]" required="required"/>');
+                            jQuery('input#{{ form.vars.id }}').replaceWith('<select id="{{ form.vars.id }}" name="form[{{ form.vars.name }}]" required="required"/>');
                             jQuery.each(msg.data, function (i, item) {
                                 jQuery("select#{{ form.vars.id }}").append('<option value="' + item.id + '">' + item.value + '</option>');
 
